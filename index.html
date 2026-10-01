@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кумир — решения</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+<style>
+:root{
+--bg:#0d1017;--bg2:#161b27;--card:rgba(255,255,255,.05);--border:rgba(255,255,255,.1);
+--text:#eef1f7;--muted:#8d95a8;--accent:#5b8cff;--accent2:#9a6bff;
+--kw:#f3f5fa;--cmd:#6aa2ff;--num:#f0b36a;--code-bg:rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: light){
+:root{
+--bg:#eef1f8;--bg2:#e2e8f5;--card:rgba(255,255,255,.75);--border:rgba(20,30,60,.12);
+--text:#161b2a;--muted:#667089;--accent:#3b6df0;--accent2:#7a4de0;
+--kw:#161b2a;--cmd:#2457d6;--num:#b8650f;--code-bg:rgba(255,255,255,.9);
+}
+}
+*{box-sizing:border-box}
+html{height:100%}
+body{
+margin:0;min-height:100%;color:var(--text);
+font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+background:radial-gradient(900px 500px at 10% -10%,color-mix(in srgb,var(--accent) 28%,transparent),transparent),
+radial-gradient(800px 500px at 100% 0%,color-mix(in srgb,var(--accent2) 22%,transparent),transparent),
+linear-gradient(180deg,var(--bg),var(--bg2));
+background-attachment:fixed;
+padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);
+}
+main{max-width:760px;margin:0 auto;padding:40px 18px 56px}
+.hero{text-align:center;margin-bottom:28px}
+.logo{font-size:2.6rem;display:inline-block;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+h1{margin:6px 0 6px;font-size:2rem;letter-spacing:-.02em;
+background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:0;color:var(--muted)}
+.tabs{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 14px;margin-bottom:6px;scrollbar-width:none;justify-content:center;flex-wrap:wrap}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+flex:0 0 auto;cursor:pointer;color:var(--text);background:var(--card);border:1px solid var(--border);
+border-radius:999px;padding:10px 20px;font-size:1rem;font-weight:600;backdrop-filter:blur(8px);
+transition:transform .15s,background .2s,border-color .2s,box-shadow .2s;
+}
+.tab:hover{transform:translateY(-2px);border-color:var(--accent)}
+.tab.active{color:#fff;border-color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 40%,transparent)}
+.tab small{opacity:.7;font-weight:500}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;backdrop-filter:blur(14px);box-shadow:0 20px 50px rgba(0,0,0,.25);animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.head h2{margin:0;font-size:1.25rem}
+.head p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.copy{cursor:pointer;color:var(--accent);background:transparent;border:1px solid var(--accent);border-radius:10px;padding:8px 14px;font-size:.9rem;font-weight:600;transition:background .2s,color .2s}
+.copy:hover{background:var(--accent);color:#fff}
+.copy.done{background:#2fb872;border-color:#2fb872;color:#fff}
+.code{background:var(--code-bg);border:1px solid var(--border);border-radius:14px;padding:14px 0;overflow-x:auto;font-family:"JetBrains Mono",Consolas,Menlo,monospace;font-size:1rem;line-height:1.7}
+.line{display:flex;padding:0 16px 0 0;white-space:pre}
+.line:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.ln{flex:0 0 44px;text-align:right;padding-right:14px;color:var(--muted);opacity:.6;user-select:none}
+.kw{color:var(--kw);font-weight:700}
+.cmd{color:var(--cmd);font-weight:600}
+.num{color:var(--num)}
+.empty{text-align:center;color:var(--muted);padding:34px 10px}
+.empty b{display:block;font-size:2rem;margin-bottom:8px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;margin-top:26px}
+</style>
+</head>
+<body>
+<main>
+<div class="hero">
+<div class="logo">🤖</div>
+<h1>Кумир — решения</h1>
+<p class="sub">Выбери задание, и появится код</p>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="card" id="card"></div>
+<footer>Исполнитель: Робот</footer>
+</main>
+<script>
+const tasks = [
+{id:"2", note:"", code:``},
+{id:"3", note:"", code:``},
+{id:"3.1", note:"Закрасить 9 клеток, закончить в Б", code:`использовать Робот
+алг
+нач
+закрасить
+нц 4 раз
+вправо
+закрасить
+кц
+нц 2 раз
+влево
+кц
+нц 4 раз
+вниз
+закрасить
+кц
+кон`},
+{id:"4", note:"Закрасить 13 клеток, закончить в Б", code:`использовать Робот
+алг
+нач
+закрасить
+вниз
+закрасить
+вверх
+нц 4 раз
+вправо
+закрасить
+кц
+вправо
+нц 2 раз
+вниз
+кц
+влево
+закрасить
+вправо
+нц 2 раз
+вниз
+кц
+влево
+закрасить
+нц 4 раз
+влево
+закрасить
+кц
+вверх
+закрасить
+вниз
+нц 4 раз
+вправо
+кц
+кон`}
+];
+
+const KW = ["использовать","алг","нач","кон","нц","кц","раз"];
+const CMD = ["вправо","влево","вверх","вниз","закрасить"];
+
+const tabs = document.getElementById("tabs");
+const card = document.getElementById("card");
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+function renderLine(text) {
+  const frag = document.createDocumentFragment();
+  text.split(/(\s+)/).forEach(part => {
+    if (!part) return;
+    let cls = "";
+    if (KW.includes(part)) cls = "kw";
+    else if (CMD.includes(part)) cls = "cmd";
+    else if (/^\d+$/.test(part)) cls = "num";
+    frag.appendChild(cls ? el("span", cls, part) : document.createTextNode(part));
+  });
+  return frag;
+}
+
+function show(id) {
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.id === id));
+  const t = tasks.find(x => x.id === id);
+  const fresh = card.cloneNode(false);
+  card.replaceWith(fresh);
+  fresh.id = "card";
+
+  const head = el("div", "head");
+  const left = el("div");
+  left.appendChild(el("h2", "", "Задание " + t.id));
+  if (t.note) left.appendChild(el("p", "", t.note));
+  head.appendChild(left);
+  fresh.appendChild(head);
+
+  if (!t.code) {
+    const empty = el("div", "empty");
+    empty.appendChild(el("b", "", "🛠️"));
+    empty.appendChild(document.createTextNode("Код для этого задания пока не добавлен"));
+    fresh.appendChild(empty);
+    return;
+  }
+
+  const btn = el("button", "copy", "Копировать");
+  btn.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(t.code);
+      btn.textContent = "Скопировано ✓";
+      btn.classList.add("done");
+    } catch (e) {
+      btn.textContent = "Не вышло";
+    }
+    setTimeout(() => { btn.textContent = "Копировать"; btn.classList.remove("done"); }, 1600);
+  };
+  head.appendChild(btn);
+
+  const box = el("div", "code");
+  t.code.split("\n").forEach((line, i) => {
+    const row = el("div", "line");
+    row.appendChild(el("span", "ln", String(i + 1)));
+    const code = el("span", "txt");
+    code.appendChild(renderLine(line));
+    row.appendChild(code);
+    box.appendChild(row);
+  });
+  fresh.appendChild(box);
+}
+
+tasks.forEach(t => {
+  const b = el("button", "tab");
+  b.dataset.id = t.id;
+  b.appendChild(document.createTextNode("Задание "));
+  b.appendChild(el("span", "", t.id));
+  b.onclick = () => show(t.id);
+  tabs.appendChild(b);
+});
+
+show("3.1");
+</script>
+</body>
+</html>
